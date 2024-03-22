@@ -18,3 +18,4 @@ reporting_periods = methods.collect_reporting_periods(
             output_type="list",
             date_output_format="string_original"
         )
+
