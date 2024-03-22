@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Spyder Editor
+SEC API Data Pulls
 
-This is a temporary script file.
+This Script walks through an example of using APIs to automatically pull data from SEC filings. This walks through an example of calling data for Microsoft
 """
-
-!git add "SEC_Filings.py"
-!git commit -m "SEC_Data_Pulls"
-!git push origin master
 
 import requests
 import pandas as pd
@@ -23,6 +19,7 @@ companyTickers = requests.get("https://www.sec.gov/files/company_tickers.json", 
 
 print(companyTickers.json().keys())
 
+      
 # format response to dictionary and get first key / value
 
 firstEntry = companyTickers.json()['0']
@@ -31,6 +28,7 @@ firstEntry = companyTickers.json()['0']
 
 directCik = companyTickers.json()['0']['cik_str']
 
+# Create Data Frame with All Company CIKs, Tickers, and Names
 companyData = pd.DataFrame.from_dict(companyTickers.json(), orient='index')
 
 # add leading zeros to CIK
@@ -84,6 +82,10 @@ companyFacts.json()['facts']['dei']['EntityCommonStockSharesOutstanding']['units
 # Filing Metadata (US GAAP)
 companyFacts.json()['facts']['us-gaap']
 companyFacts.json()['facts']['us-gaap'].keys()
+
+# Create DataFrame of All Line Items listed in 
+SEC_LineItems = pd.DataFrame.from_dict((companyFacts.json()['facts']['us-gaap'])).T
+
 companyFacts.json()['facts']['us-gaap']['Revenues']
 companyFacts.json()['facts']['us-gaap']['Assets']
 
@@ -112,4 +114,4 @@ assets10Q = assetsData[assetsData.form == '10-Q']
 assets10Q = assets10Q.reset_index(drop=True)
 
 # Plot Data
-assets10Q.plot(x='end', y='val')
+assets10Q.plot(x='end', y='val', title='Microsoft')
